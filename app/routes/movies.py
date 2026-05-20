@@ -41,7 +41,7 @@ def update(id:int, movie: MovieCreate, db: Session = Depends(get_db)):
     if not db_movie:
         raise HTTPException(status_code=404, detail="Movie not found")
     
-    duplicate = db.query(Movie).filter(Movie.title == movie.title).first()
+    duplicate = db.query(Movie).filter(Movie.title == movie.title, Movie.id != id).first()
     if duplicate:
         raise HTTPException(status_code=409, detail="Conflict")
     db_movie.title = movie.title
